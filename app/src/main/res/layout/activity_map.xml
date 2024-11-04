@@ -1,0 +1,74 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/map"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff">
+
+    <RelativeLayout
+        android:id="@+id/offline"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <org.osmdroid.views.MapView
+            android:id="@+id/offline_map"
+            tilesource="MAPNIK"
+            android:layout_alignParentStart="true"
+            android:layout_width="match_parent"
+            android:layout_height="750dp"/>
+
+        <ImageView
+            android:id="@+id/img_warning"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="350dp"
+            android:layout_marginTop="525dp"
+            android:layout_marginEnd="21dp"
+            android:src="@drawable/img_warning" />
+        <ImageView
+            android:id="@+id/img_filter"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/img_warning"
+            android:layout_marginTop="25dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="350dp"
+            android:layout_marginEnd="21dp"
+            android:src="@drawable/img_filter" />
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/function"
+        android:layout_below="@id/offline"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <ImageView
+            android:id="@+id/img_dashboard"
+            android:layout_width="110dp"
+            android:layout_height="100dp"
+            android:src="@drawable/img_dashboard"/>
+        <ImageView
+            android:id="@+id/img_map"
+            android:layout_width="110dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/img_map"/>
+        <ImageView
+            android:id="@+id/img_setting"
+            android:layout_width="110dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/img_setting"/>
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,164 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/login"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Back button -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="454dp"
+        android:background="@drawable/login_rounded_blue_bg"></View>
+
+    <!-- Title: Pothole Patrol -->
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Pothole Patrol"
+        android:textColor="#FFFFFF"
+        android:textSize="40sp"
+        android:textStyle="bold" />
+
+    <!-- Subtitle: Fill the below information to login -->
+    <TextView
+        android:id="@+id/subtitleText"
+        android:fontFamily="@font/poppins_medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titleText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Fill the below information to login"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+
+    <!-- Login box -->
+    <LinearLayout
+        android:id="@+id/loginBox"
+        android:layout_width="match_parent"
+        android:layout_height="525dp"
+        android:layout_below="@id/subtitleText"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/login_rounded_editlogin"
+        android:elevation="8dp"
+        android:orientation="vertical"
+        android:padding="7dp">
+
+        <!-- Login Account Text -->
+        <TextView
+            android:id="@+id/loginAccountText"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="29dp"
+            android:text="Login Account"
+            android:textColor="#000000"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <!-- Username EditText -->
+        <EditText
+            android:id="@+id/usernameInput"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_width="match_parent"
+            android:layout_height="66dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/sign_log_edittext"
+            android:hint="Username"
+            android:padding="12dp"
+            android:textColor="#000000" />
+
+        <!-- Password EditText -->
+        <EditText
+            android:id="@+id/passwordInput"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_width="match_parent"
+            android:layout_height="66dp"
+            android:layout_marginTop="37dp"
+            android:background="@drawable/sign_log_edittext"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:padding="12dp"
+            android:textColor="#000000" />
+
+        <!-- Forgot Password Text -->
+        <TextView
+            android:id="@+id/forgotPassword"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="19dp"
+            android:text="Forgot password?"
+            android:textColor="#808080"
+            android:textSize="13sp" />
+
+        <!-- Login Button -->
+        <Button
+            android:id="@+id/loginButton"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_width="match_parent"
+            android:layout_height="66dp"
+            android:layout_marginTop="15dp"
+            android:paddingRight="45dp"
+            android:paddingLeft="12dp"
+            android:drawableStart="@drawable/log_sign"
+            android:background="@drawable/login_rounded_white_btn"
+            android:text="Login"
+            android:textAllCaps="false"
+            android:textColor="#7878CE"
+            android:textSize="20sp" />
+
+        <!-- Or text -->
+        <TextView
+            android:id="@+id/orText"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="14dp"
+            android:text="or"
+            android:textColor="#808080"
+            android:textSize="19sp" />
+
+        <!-- Continue with Google Button -->
+        <Button
+            android:id="@+id/googleButton"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_width="match_parent"
+            android:layout_height="66dp"
+            android:layout_marginTop="10dp"
+            android:paddingRight="30dp"
+            android:paddingLeft="17dp"
+            android:drawableStart="@drawable/google"
+            android:background="@drawable/login_rounded_white_btn"
+            android:text="Continue with Google"
+            android:textAllCaps="false"
+            android:textColor="#7878CE"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <!-- Sign up option -->
+    <Button
+        android:id="@+id/signUpButton"
+        android:fontFamily="@font/poppins_medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/login_donthaveacc_btn"
+        android:gravity="center"
+        android:padding="22dp"
+        android:text="Don’t have an account? Sign up"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+
+
+</RelativeLayout>
