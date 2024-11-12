@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:background="#ffffff"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+  <RelativeLayout
+      android:id="@+id/huy"
+      android:layout_marginTop="15dp"
+      android:layout_width="412dp"
+      android:layout_height="50dp"
+      android:background="@color/black">
+
+    <TextView
+        android:id="@+id/txt_huy"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="12dp"
+        android:layout_width="45dp"
+        android:layout_height="30dp"
+        android:textSize="25sp"
+        android:textColor="#0a59c0"
+        android:textStyle="normal"
+        android:text="Hủy" />
+
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:id="@+id/lock"
+        android:src="@drawable/img_lock"
+        android:layout_toRightOf="@id/txt_huy"
+        android:layout_marginLeft="40dp"
+        android:layout_centerVertical="true"/>
+
+
+    <TextView
+        android:id="@+id/txt_google"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/lock"
+        android:text="accounts.google.com"
+        android:textColor="@color/white"
+        android:textSize="25sp" />
+  </RelativeLayout>
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/dang_nhap"
+      android:layout_below="@+id/huy"
+      android:layout_marginTop="10dp"
+      android:layout_marginLeft="18dp"
+      android:orientation="horizontal">
+    <ImageView
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:src="@drawable/google"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="normal"
+        android:textSize="15sp"
+        android:textColor="#000000"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="4dp"
+        android:text="Đăng nhập bằng Google"/>
+  </LinearLayout>
+  <View
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:background="#D3D3D3"
+      android:layout_below="@id/dang_nhap"
+      android:layout_marginTop="8dp"
+      android:layout_marginBottom="8dp"/>
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/dung_email"
+      android:layout_marginTop="40dp"
+      android:layout_below="@id/dang_nhap">
+
+    <TextView
+        android:id="@+id/use_email"
+        android:layout_marginLeft="18dp"
+        android:layout_width="374dp"
+        android:layout_height="120dp"
+        android:textStyle="normal"
+        android:textSize="35sp"
+        android:textColor="#000000"
+        android:text="Dùng email để khôi phục mật khẩu"/>
+    <LinearLayout
+        android:id="@+id/user_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/use_email"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="25dp">
+      <ImageView
+          android:layout_width="28dp"
+          android:layout_height="28dp"
+          android:src="@drawable/img_user"/>
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textStyle="normal"
+          android:textSize="18sp"
+          android:textColor="#000000"
+          android:layout_marginLeft="10dp"
+          android:text="phamvandong@gmail.com"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_below="@id/user_email"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/resetpass_custom_email">
+      <View
+          android:layout_width="369dp"
+          android:layout_height="50dp"
+          android:background="@drawable/resetpass_custom_email"/>
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:hint="Nhập email"
+          android:layout_marginTop="12dp"
+          android:layout_marginLeft="10dp"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_marginTop="300dp"
+        android:layout_marginLeft="18dp"
+        android:layout_width="375dp"
+        android:layout_height="wrap_content"
+        android:textStyle="normal"
+        android:textSize="14sp"
+        android:textColor="#99000000"
+        android:lineSpacingExtra="8sp"
+        android:text="Trước khi sử dụng Pothole Patrol, bạn có thể xem chính
+sách quyền riêng tư và điều khoản dịch vụ của ứng dung
+này."/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="500dp">
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textStyle="normal"
+          android:textSize="15sp"
+          android:textColor="#06066b"
+          android:layout_marginLeft="18dp"
+          android:fontFamily="sans-serif-medium"
+          android:text="Thử cách khác"/>
+      <Button
+          android:layout_width="120dp"
+          android:layout_height="wrap_content"
+          android:backgroundTint="#06066B"
+          android:layout_marginLeft="150dp"
+          android:fontFamily="sans-serif-medium"
+          android:text="Tiếp tục"/>
+    </LinearLayout>
+  </RelativeLayout>
+
+
+</RelativeLayout>

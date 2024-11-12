@@ -17,6 +17,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import android.util.Log;
+import android.widget.TextView;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -55,6 +57,15 @@ public class Login extends AppCompatActivity
 
         EditText usernameEditText = findViewById(R.id.usernameInput);
         EditText passwordEditText = findViewById(R.id.passwordInput);
+        TextView forgot = findViewById(R.id.forgotPassword);
+
+        forgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Login.this, resetPass.class);
+                startActivity(intent);
+            }
+        });
 
         Button loginbtn = findViewById(R.id.loginButton);
         loginbtn.setOnClickListener(new View.OnClickListener() {
@@ -87,13 +98,12 @@ public class Login extends AppCompatActivity
                     String token = "Bearer " + response.body().getToken();
                     saveToken(getApplicationContext(), token);
                     Log.d("TOKEN", token);
-                    Intent intent = new Intent(Login.this, dash.class);
+                    Intent intent = new Intent(Login.this, map.class);
                     startActivity(intent);
                 } else {
                     Log.e("LOGIN_FAILED", "Login failed");
                 }
             }
-
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 Log.e("LOGIN_ERROR", t.getMessage());

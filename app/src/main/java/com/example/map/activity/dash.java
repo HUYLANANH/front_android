@@ -1,7 +1,11 @@
 package com.example.map.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,19 +32,52 @@ public class dash extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_dash);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.dash), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        String token = Token.getToken(this);
-        if (token != null) {
-            Log.d("TOKEN", "Token found: " + token);
-            fetchWeatherForecast(token);
-        } else {
-            Log.e("TOKEN_ERROR", "No token found, please login first.");
-        }
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_IMMERSIVE
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN);
+
+//        String token = Token.getToken(this);
+//        if (token != null) {
+//            Log.d("TOKEN", "Token found: " + token);
+//            fetchWeatherForecast(token);
+//        } else {
+//            Log.e("TOKEN_ERROR", "No token found, please login first.");
+//        }
+        ImageView mapIcon = findViewById(R.id.img_map);
+        ImageView settingIcon = findViewById(R.id.img_setting);
+        Button reportBtn = findViewById(R.id.report_issue_button);
+
+        mapIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(dash.this, map.class);
+                startActivity(intent);
+            }
+        });
+
+        settingIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(dash.this, setting.class);
+                startActivity(intent);
+            }
+        });
+
+        reportBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(dash.this, report.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public void fetchWeatherForecast(String token)

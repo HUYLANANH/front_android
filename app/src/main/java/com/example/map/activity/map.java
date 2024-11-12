@@ -46,7 +46,8 @@ public class map extends AppCompatActivity {
     //private SearchView searchView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_map);
@@ -78,7 +79,7 @@ public class map extends AppCompatActivity {
                     , REQUEST_PERMISSIONS);
         } else {
             // If permission has already been granted, you can load tiles or set up other functionalities here
-            loadOfflineTiles();
+            //loadOfflineTiles();
         }
 
 
@@ -106,16 +107,29 @@ public class map extends AppCompatActivity {
             }
         });
 
+        settingIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(map.this, setting.class);
+                startActivity(intent);
+            }
+        });
+
+        dashboardIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(map.this, dash.class);
+                startActivity(intent);
+            }
+        });
+
         IMapController mapController = map.getController();
         mapController.setZoom(15.0);
         GeoPoint geoPoint = new GeoPoint(10.878488618182582, 106.8063226828715);
         mapController.setCenter(geoPoint);
 
-
-
-
-        configureOSMDroid();
-        initializeMap();
+        //configureOSMDroid();
+        //initializeMap();
     }
 
     private void configureOSMDroid(){

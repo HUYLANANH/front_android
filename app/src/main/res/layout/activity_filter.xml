@@ -193,7 +193,7 @@
             android:layout_width="110dp"
             android:layout_height="100dp"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/img_map"/>
+            android:src="@drawable/img_map_bold"/>
         <ImageView
             android:id="@+id/img_setting"
             android:layout_width="110dp"

@@ -1,10 +1,192 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/dash"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.dash">
+    android:background="#ffffff">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <RelativeLayout
+        android:id="@+id/header_section"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="8dp"
+        android:padding="10dp"
+        android:background="#ffffff">
+
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chào mừng bạn đã đến với"
+            android:textSize="18sp"
+            android:textColor="#8f8f8f"
+            android:layout_alignParentStart="true"/>
+        <TextView
+            android:id="@+id/text2"
+            android:layout_below="@id/text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ứng dụng Pothole Detection"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:textColor="#000000"
+            android:layout_alignParentStart="true"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/stats_section"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/header_section"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:weightSum="3">
+
+        <LinearLayout
+            android:id="@+id/Total"
+            android:layout_width="184dp"
+            android:layout_height="136dp"
+            android:orientation="vertical"
+            android:padding="17dp"
+            android:layout_alignParentStart="true"
+            android:background="@drawable/dash_card_background"
+            android:layout_marginEnd="4dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/total"/>
+
+            <TextView
+                android:id="@+id/potholes_detected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="18"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"
+                android:textColor="#121417"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total Potholes Detected"
+                android:textSize="16sp"
+                android:layout_marginTop="4dp"
+                android:textColor="#637587"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Distance"
+            android:layout_width="184dp"
+            android:layout_height="136dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="17dp"
+            android:background="@drawable/dash_card_background"
+            android:layout_marginEnd="4dp"
+            android:layout_alignBaseline="@id/Total"
+            android:layout_alignParentEnd="true">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/distance"/>
+
+            <TextView
+                android:id="@+id/distance_traveled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="8 km"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"
+                android:textColor="#121417"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Distance Traveled"
+                android:textSize="16sp"
+                android:layout_marginTop="4dp"
+                android:textColor="#637587"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Biggest"
+            android:layout_width="184dp"
+            android:layout_height="136dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="17dp"
+            android:layout_marginTop="12dp"
+            android:layout_below="@id/Total"
+            android:background="@drawable/dash_card_background">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/biggest"/>
+
+            <TextView
+                android:id="@+id/biggest_pothole"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Biggest Pothole"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"
+                android:textColor="#121417"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Click to see"
+                android:textSize="16sp"
+                android:layout_marginTop="4dp"
+                android:textColor="#637587"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/report_issue_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Report a new issue"
+        android:layout_above="@id/function"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/dash_rounded_button"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"/>
+
+    <LinearLayout
+        android:id="@+id/function"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <ImageView
+            android:id="@+id/img_dashboard"
+            android:layout_width="110dp"
+            android:layout_height="100dp"
+            android:src="@drawable/dash_bold"/>
+        <ImageView
+            android:id="@+id/img_map"
+            android:layout_width="110dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/map"/>
+        <ImageView
+            android:id="@+id/img_setting"
+            android:layout_width="110dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/img_setting"/>
+    </LinearLayout>
+</RelativeLayout>
