@@ -151,6 +151,16 @@
         </LinearLayout>
     </RelativeLayout>
 
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/bar_chart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@+id/stats_section"
+        android:layout_above="@+id/report_issue_button">
+
+    </com.github.mikephil.charting.charts.BarChart>
+
     <Button
         android:id="@+id/report_issue_button"
         android:layout_width="match_parent"
@@ -159,7 +169,7 @@
         android:layout_above="@id/function"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/dash_rounded_button"
         android:textColor="@android:color/white"
         android:textSize="16sp"/>

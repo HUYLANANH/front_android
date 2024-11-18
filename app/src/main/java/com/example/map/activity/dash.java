@@ -1,6 +1,7 @@
 package com.example.map.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,7 +19,17 @@ import com.example.map.client.ApiClient;
 import com.example.map.client.ApiService;
 import com.example.map.client.Token;
 import com.example.map.model.WeatherForecast;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -27,6 +38,7 @@ import retrofit2.Response;
 
 public class dash extends AppCompatActivity {
 
+    private List<String> xValues = Arrays.asList("17/11/2024","18/11/2024","19/11/2024","20/11/2024");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,13 +56,6 @@ public class dash extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN);
 
-//        String token = Token.getToken(this);
-//        if (token != null) {
-//            Log.d("TOKEN", "Token found: " + token);
-//            fetchWeatherForecast(token);
-//        } else {
-//            Log.e("TOKEN_ERROR", "No token found, please login first.");
-//        }
         ImageView mapIcon = findViewById(R.id.img_map);
         ImageView settingIcon = findViewById(R.id.img_setting);
         Button reportBtn = findViewById(R.id.report_issue_button);
@@ -78,30 +83,36 @@ public class dash extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        BarChart barChart = findViewById(R.id.bar_chart);
+        barChart.getAxisRight().setDrawLabels(false);
+
+        ArrayList<BarEntry> entries = new ArrayList<>();
+        entries.add(new BarEntry(0,4f));
+        entries.add(new BarEntry(1,8f));
+        entries.add(new BarEntry(2,6f));
+        entries.add(new BarEntry(3,3f));
+
+        YAxis yAxis = barChart.getAxisLeft();
+        yAxis.setAxisMaximum(0f);
+        yAxis.setAxisMaximum(50f);
+        yAxis.setAxisLineWidth(2f);
+        yAxis.setAxisLineColor(Color.BLACK);
+        yAxis.setLabelCount(5);
+
+        BarDataSet dataSet = new BarDataSet(entries, "Subjects");
+        dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+
+        BarData barData = new BarData(dataSet);
+        barChart.setData(barData);
+
+        barChart.getDescription().setEnabled(false);
+        barChart.invalidate();
+
+        barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(xValues));
+        barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        barChart.getXAxis().setGranularity(1f);
+        barChart.getXAxis().setGranularityEnabled(true);
     }
 
-    public void fetchWeatherForecast(String token)
-    {
-        ApiService apiService = ApiClient.getRetrofitInstance().create(ApiService.class);
-
-        Call<List<WeatherForecast>> call = apiService.getWeatherForecast(token);
-        call.enqueue(new Callback<List<WeatherForecast>>() {
-            @Override
-            public void onResponse(Call<List<WeatherForecast>> call, Response<List<WeatherForecast>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<WeatherForecast> forecasts = response.body();
-                    for (WeatherForecast forecast : forecasts) {
-                        Log.d("WEATHER", "Date: " + forecast.getDate() + ", Temp: " + forecast.getTemperatureC());
-                    }
-                } else {
-                    Log.e("WEATHER_FAILED", "Failed to fetch weather data");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<WeatherForecast>> call, Throwable t) {
-                Log.e("WEATHER_ERROR", t.getMessage());
-            }
-        });
-    }
 }

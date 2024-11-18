@@ -1,5 +1,6 @@
 package com.example.map.client;
 
+import com.example.map.model.Tile;
 import com.example.map.model.WeatherForecast;
 import com.example.map.request.LoginRequest;
 import com.example.map.request.RegisterRequest;
@@ -23,5 +24,8 @@ public interface ApiService {
 
     @GET("WeatherForecast")
     Call<List<WeatherForecast>> getWeatherForecast(@Header("Authorization") String token);
+
+    @GET("api/Map/get-info")
+    Call<List<Tile>> getAvailableTiles();
 }
 

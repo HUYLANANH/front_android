@@ -67,12 +67,17 @@ public class SignUp extends AppCompatActivity {
                 String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
                 String pass_confirm = passwordConfirm.getText().toString();
-                if(pass_confirm.equals(password))
-                {
-                    registerUser(username,email, password);
+                if (username.isEmpty()) {
+                    usernameEditText.setError("Username là bắt buộc!");
+                } else if (password.isEmpty()) {
+                    passwordEditText.setError("Password là bắt buộc!");
+                } else if (email.isEmpty()) {
+                    emailEditText.setError("Email là bắt buộc!");
+                } else if (pass_confirm.isEmpty() || !pass_confirm.equals(password)) {
+                    passwordEditText.setError("Mật khẩu không đúng");
                 }
-                else{
-                    Log.e("REGISTER_FAILED", "Not equal pass confirm");
+                else {
+                    registerUser(username, email, password);
                 }
             }
         });

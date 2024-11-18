@@ -1,53 +1,65 @@
 package com.example.map.activity;
 
-import android.content.Context;
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+
+import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.widget.Toast;
-
-import androidx.core.app.ActivityCompat;
-
 import com.example.map.R;
+import com.example.map.client.ApiClient;
+import com.example.map.client.ApiService;
+import com.example.map.client.Token;
+import com.example.map.mapservice.CustomTilesProvider;
+import com.example.map.model.Tile;
 
 import org.osmdroid.api.IMapController;
-import org.osmdroid.config.Configuration;
-import org.osmdroid.events.MapEventsReceiver;
+import org.osmdroid.tileprovider.MapTileProviderBasic;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.tileprovider.tilesource.XYTileSource;
 import org.osmdroid.util.GeoPoint;
-import org.osmdroid.views.CustomZoomButtonsController;
 import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.Marker;
-import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
-import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class map extends AppCompatActivity {
     ImageView warningIcon, filterIcon, dashboardIcon, mapIcon, settingIcon;
-    private MapView map;
-    private static final int REQUEST_PERMISSIONS = 1;
-    Double latCurrentPosition = 0.0, longCurrentPosition = 0.0;
-    //private SearchView searchView;
+    private MapView mapView;
+    private Set<Tile> availableTiles = new HashSet<>();
+    private CustomTilesProvider customTileProvider;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_map);
@@ -72,25 +84,17 @@ public class map extends AppCompatActivity {
             return insets.consumeSystemWindowInsets();
         });
 
-        // Check for permission
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}
-                    , REQUEST_PERMISSIONS);
-        } else {
-            // If permission has already been granted, you can load tiles or set up other functionalities here
-            //loadOfflineTiles();
-        }
-
-
         warningIcon = findViewById(R.id.img_warning);
         filterIcon = findViewById(R.id.img_filter);
         dashboardIcon = findViewById(R.id.img_dashboard);
         mapIcon = findViewById(R.id.img_map);
         settingIcon = findViewById(R.id.img_setting);
-        map = findViewById(R.id.offline_map);
-        //searchView = findViewById(R.id.search_location);
+        mapView = findViewById(R.id.offline_map);
+        mapView.setTileSource(createTileSource());
 
+        fetchAvailableTiles();
+
+        //set button warning
         warningIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,6 +103,7 @@ public class map extends AppCompatActivity {
             }
         });
 
+        //set button filter
         filterIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,124 +127,54 @@ public class map extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        IMapController mapController = map.getController();
-        mapController.setZoom(15.0);
-        GeoPoint geoPoint = new GeoPoint(10.878488618182582, 106.8063226828715);
-        mapController.setCenter(geoPoint);
-
-        //configureOSMDroid();
-        //initializeMap();
     }
 
-    private void configureOSMDroid(){
-        // Load the OSMDroid configuration
-        Configuration.getInstance().load(this, getPreferences(MODE_PRIVATE));
+    private void fetchAvailableTiles() {
+        ApiService apiService = ApiClient.getRetrofitInstance().create(ApiService.class);
+        apiService.getAvailableTiles().enqueue(new Callback<List<Tile>>() {
+            @Override
+            public void onResponse(Call<List<Tile>> call, Response<List<Tile>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    availableTiles.addAll(response.body());
+                    Log.d("Tiles", "Available tiles: " + availableTiles);
+                    setupMap(); // Sau khi có dữ liệu, tiến hành cấu hình MapView
+                } else {
+                    Log.e("Tiles", "Failed to fetch tiles: " + response.errorBody());
+                }
+            }
 
-        // Set up cache directory (external storage or internal storage)
-        File osmdroidBasePath = getExternalFilesDir("osmdroid");
-        Configuration.getInstance().setOsmdroidBasePath(osmdroidBasePath);
-        Configuration.getInstance().setOsmdroidTileCache(new File(osmdroidBasePath, "tiles"));
-    }
+            @Override
+            public void onFailure(Call<List<Tile>> call, Throwable t) {
 
-    private void initializeMap(){
-        map.setTileSource(TileSourceFactory.MAPNIK);
-
-        // Enable zoom controls
-        map.setMultiTouchControls(true);
-        map.getZoomController().setVisibility(CustomZoomButtonsController.Visibility.SHOW_AND_FADEOUT);
-
-        final MyLocationNewOverlay myLocationNewOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(this), map);
-        myLocationNewOverlay.enableMyLocation();
-        map.getOverlays().add(myLocationNewOverlay);
-        myLocationNewOverlay.runOnFirstFix(() -> {
-            if (myLocationNewOverlay.getMyLocation() != null){
-                runOnUiThread(() -> {
-                    map.getController().setCenter(myLocationNewOverlay.getMyLocation());
-                    latCurrentPosition = myLocationNewOverlay.getMyLocation().getLatitude();
-                    longCurrentPosition = myLocationNewOverlay.getMyLocation().getLongitude();
-                });
             }
         });
-        GeoPoint geoPoint = new GeoPoint(10.878488618182582, 106.8063226828715);
-        Marker myMakerPoint = new Marker(map);
-        myMakerPoint.setPosition(geoPoint);
-        myMakerPoint.setTitle("KTX Khu A, Đại học Quốc gia Thành phố Hồ Chí Minh");
-        myMakerPoint.setIcon(this.getResources().getDrawable(R.drawable.img_placeholder));
-        myMakerPoint.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-        map.getOverlays().add(myMakerPoint);
-
-        MapEventsReceiver mapEventsReceiver = new MapEventsReceiver() {
-            @Override
-            public boolean singleTapConfirmedHelper(GeoPoint point) {
-                Toast.makeText(getApplicationContext(), "Single tap at: " + point.getLatitude() + ", " + point.getLongitude(), Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            @Override
-            public boolean longPressHelper(GeoPoint point) {
-                Toast.makeText(getApplicationContext(), "Long press at: " + point.getLatitude() + ", " + point.getLongitude(), Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        };
     }
 
-    private void loadOfflineTiles() {
-        // Checking network state to determine online/offline mode
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo;
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE) == PackageManager.PERMISSION_GRANTED) {
-            networkInfo = cm.getActiveNetworkInfo();
-        } else {
-            // You may want to handle the lack of permission here accordingly
-            networkInfo = null;
-        }
-
-        if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
-            // Load online tiles if connected
-            map.setTileSource(TileSourceFactory.MAPNIK);
-            Toast.makeText(this, "You are online. Using online maps.", Toast.LENGTH_SHORT).show();
-        } else {
-            // Offline mode
-            map.setTileSource(TileSourceFactory.MAPNIK);
-            Toast.makeText(this, "You are offline. Loading cached map tiles.", Toast.LENGTH_SHORT).show();
-        }
+    private XYTileSource createTileSource() {
+        // Tạo một tile source mới cho MapView
+        return new XYTileSource(
+                "CustomTiles",       // Tên của tile source
+                11,                  // Zoom level nhỏ nhất
+                14,                  // Zoom level lớn nhất
+                256,                 // Kích thước của mỗi tile (pixel)
+                ".png",              // Định dạng file
+                new String[]{"http://10.0.3.2:5122/api/Map/"} // URL backend
+        );
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // Resume the map view
-        map.onResume();
-    }
+    private void setupMap() {
+        // Tạo CustomTileProvider với danh sách tile hợp lệ
+        customTileProvider = new CustomTilesProvider(getApplicationContext(), createTileSource(), availableTiles);
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        // Pause the map view
-        map.onPause();
-    }
+        // Gán CustomTileProvider cho MapView
+        mapView.setTileProvider(customTileProvider);
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        // Cleanup
-        map.onDetach();
-    }
+        // Cấu hình các tính năng của MapView
+        mapView.setMaxZoomLevel(14.0);           // Zoom tối đa
+        mapView.setMinZoomLevel(11.0);           // Zoom tối thiểu
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        // Check if the permissions were granted
-        if (requestCode == REQUEST_PERMISSIONS) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission granted
-                loadOfflineTiles();
-            } else {
-                // Permission denied, inform the user
-                Toast.makeText(this, "Permission denied to write to storage", Toast.LENGTH_SHORT).show();
-            }
-        }
+        // Thiết lập vị trí mặc định của bản đồ (ví dụ: trung tâm)
+        IMapController mapController = mapView.getController();
+        mapController.setZoom(12);             // Set zoom level
     }
 }

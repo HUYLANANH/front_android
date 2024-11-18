@@ -15,7 +15,6 @@
 
         <org.osmdroid.views.MapView
             android:id="@+id/offline_map"
-            tilesource="MAPNIK"
             android:layout_alignParentStart="true"
             android:layout_width="match_parent"
             android:layout_height="750dp"/>

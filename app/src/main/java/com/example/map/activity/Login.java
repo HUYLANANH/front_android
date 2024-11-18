@@ -73,7 +73,14 @@ public class Login extends AppCompatActivity
             public void onClick(View v) {
                 String username = usernameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
-                login(username, password);
+                if (username.isEmpty()) {
+                    usernameEditText.setError("Username là bắt buộc!");
+                } else if (password.isEmpty()) {
+                    passwordEditText.setError("Password là bắt buộc!");
+                }
+                else {
+                    login(username, password);
+                }
             }
         });
     }
