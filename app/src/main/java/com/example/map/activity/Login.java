@@ -2,9 +2,7 @@ package com.example.map.activity;
 
 import static com.example.map.client.Token.saveToken;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -26,11 +24,8 @@ import retrofit2.Response;
 import com.example.map.R;
 import com.example.map.client.ApiClient;
 import com.example.map.client.ApiService;
-import com.example.map.model.WeatherForecast;
 import com.example.map.request.LoginRequest;
 import com.example.map.response.LoginResponse;
-
-import java.util.List;
 
 public class Login extends AppCompatActivity
 {
@@ -62,7 +57,7 @@ public class Login extends AppCompatActivity
         forgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Login.this, resetPass.class);
+                Intent intent = new Intent(Login.this, resetPassEmail.class);
                 startActivity(intent);
             }
         });
